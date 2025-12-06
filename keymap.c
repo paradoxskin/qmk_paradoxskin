@@ -1,20 +1,67 @@
 #include QMK_KEYBOARD_H
 
-#define YES 1
-#define NO  0
+/* qmk keycode diff */
+#ifndef MS_BTN1
+#define MS_BTN1 KC_BTN1
+#define MS_BTN2 KC_BTN2
+#define MS_UP KC_MS_U
+#define MS_DOWN KC_MS_D
+#define MS_LEFT KC_MS_L
+#define MS_RGHT KC_MS_R
+#define MS_WHLU KC_WH_U
+#define MS_WHLD KC_WH_D
+#define MS_WHLL KC_WH_L
+#define MS_WHLR KC_WH_R
+#define RM_TOGG RGB_TOG
+#define RM_NEXT RGB_MOD
+#define RM_SPDU RGB_SPI
+#define RM_VALU RGB_VAI
+#define RM_SATU RGB_SAI
+#define RM_HUEU RGB_HUI
+#endif
 
 /* keyboard diff */
 #ifdef KEYBOARD_keychron_v4
-#define ENABLE_BLUETOOTH NO
-#define ENABLE_MATRIX YES
+#define HAS_MAC
+#define ENABLE_MATRIX
 #define _LAYOUT LAYOUT_ansi_61
 #endif
 
+#ifdef KEYBOARD_keychron_k9_pro_ansi_rgb
+#define HAS_MAC
+#define ENABLE_BLUETOOTH
+#define ENABLE_MATRIX
+#define _LAYOUT LAYOUT_61_ansi
+#define KC_BTU BT_USB
+#define KC_BT1 BT_HST1
+#define KC_BT2 BT_HST2
+#define KC_BT3 BT_HST3
+#define KC_BT4 XXXXXXX
+#endif
+
+#ifdef KEYBOARD_keychron_k12_pro_ansi_white
+#define HAS_MAC
+#define ENABLE_BLUETOOTH
+#define _LAYOUT LAYOUT_61_ansi
+#define KC_BTU BT_USB
+#define KC_BT1 BT_HST1
+#define KC_BT2 BT_HST2
+#define KC_BT3 BT_HST3
+#define KC_BT4 XXXXXXX
+#undef RM_TOGG
+#undef RM_NEXT
+#undef RM_VALU
+#undef RM_SATU
+#define RM_TOGG BL_TOGG
+#define RM_NEXT BL_STEP
+#define RM_VALU BL_UP
+#define RM_SATU BL_DOWN
+#endif
+
 #ifdef KEYBOARD_annepro2_c18
-#define ENABLE_BLUETOOTH YES
-#define ENABLE_MATRIX NO
+#define ENABLE_BLUETOOTH
 #define _LAYOUT LAYOUT_60_ansi
-#define KC_BTU KC_AP2_BT_UNPAIR
+#define KC_BTU KC_AP2_USB
 #define KC_BT1 KC_AP2_BT1
 #define KC_BT2 KC_AP2_BT2
 #define KC_BT3 KC_AP2_BT3
@@ -29,7 +76,6 @@ void fn_td_tap_hold_release(tap_dance_state_t *state, void *user_data);
 bool pre_odd_space(uint16_t keycode, keyrecord_t *record);
 
 /* static */
-#define QK_TAP_DANCE_GET_INDEX(kc) ((kc)&0xFF)
 #define ACT_TD_TAP_HOLD(once, irq_tap, tap, hold) { \
     .fn = {NULL, fn_td_tap_hold_finished, fn_td_tap_hold_reset, fn_td_tap_hold_release}, \
     .user_data = (void *)&((td_tap_hold_t){(once), (irq_tap), (tap), (hold), 0}) \
@@ -37,7 +83,7 @@ bool pre_odd_space(uint16_t keycode, keyrecord_t *record);
 #define ODD_IDX(KC) ((KC) - ODD_BG - 1)
 
 enum layers {
-#ifdef KEYBOARD_keychron_v4
+#ifdef HAS_MAC
     _MAC,
 #endif
     _BASE,
@@ -96,7 +142,7 @@ uint16_t g_odd_space_type;
 
 /* keymaps */
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-#if defined(KEYBOARD_keychron_v4)
+#if defined(HAS_MAC)
     [_MAC] = _LAYOUT(
         KC_ESC,  KC_1,    KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9,    KC_0,    KC_MINS, KC_EQL,  KC_BSPC,
         KC_TAB,  KC_Q,    KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSLS,
@@ -113,7 +159,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         TD(TD_TH_LC_F1),     MO(_FN2), KC_LGUI,                KC_ODD_SPACE,                 KC_RALT, LT(_FN1,KC_LEFT), LT(_FN2,KC_DOWN), LT(_FNX,KC_RIGHT)
     ),
     [_FN1] = _LAYOUT(
-#if ENABLE_BLUETOOTH
+#ifdef ENABLE_BLUETOOTH
         KC_BTU,  KC_BT1,  KC_BT2,  KC_BT3,  KC_BT4,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
 #else
         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
@@ -237,7 +283,7 @@ void post_process_record_user(uint16_t keycode, keyrecord_t *record)
     }
 }
 
-#if ENABLE_MATRIX
+#ifdef ENABLE_MATRIX
 layer_state_t layer_state_set_user(layer_state_t state) {
     rgb_matrix_set_color_all(0, 0, 0);
     switch (get_highest_layer(state)) {
@@ -294,7 +340,7 @@ void fn_td_tap_hold_release(tap_dance_state_t *state, void *user_data)
 
 static void pre_odd_space_light(int on)
 {
-#if ENABLE_MATRIX
+#ifdef ENABLE_MATRIX
     if (on) {
         rgb_matrix_set_color(41, 0, 5, 5);
     }
