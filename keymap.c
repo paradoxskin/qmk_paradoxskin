@@ -112,11 +112,11 @@ enum layers {
     _BASE,
     _FN1,
     _FN2,
-    _FNX,
-    _FNY,
     _TN1,
     _TN2,
     _TN3,
+    _FNX,
+    _FNY,
 };
 
 enum td_names {
@@ -195,28 +195,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_MPRV,          KC_MNXT, XXXXXXX, XXXXXXX, C(S(KC_V)), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_PGDN,          XXXXXXX,
         KC_MUTE, XXXXXXX, KC_MPLY,                               XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
     ),
-    [_FNX] = _LAYOUT(
-        KC_CAPS, TO(_TN1), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-        XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, TO(_TN2),
-        XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          TO(_TN3),
-        XXXXXXX,           XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,
-        XXXXXXX, XXXXXXX,  XXXXXXX,                            XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
-    ),
-    [_FNY] = _LAYOUT(
-        KC_ESC,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,      XXXXXXX,
-        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,      XXXXXXX,
-        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,               XXXXXXX,
-        XXXXXXX,          XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,               XXXXXXX,
-        XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX,                            XXXXXXX, XXXXXXX, TO(_BASE), XXXXXXX
-    ),
-
     // TO layer
     [_TN1] = _LAYOUT(
         KC_BSPC, KC_KP_SLASH, KC_KP_ASTERISK, KC_KP_MINUS, _______,  _______, _______, _______, _______, _______, _______, _______, _______, _______,
         KC_7,    KC_8,        KC_9,           KC_KP_PLUS,  _______,  _______, _______, _______, _______, _______, _______, _______, _______, _______,
         KC_4,    KC_5,        KC_6,           KC_KP_PLUS,  _______,  _______, MS_LEFT, MS_DOWN, MS_UP,   MS_RGHT, MS_BTN2, _______,          _______,
         KC_1,                 KC_2,           KC_3,        KC_ENTER, _______, _______, _______, _______, _______, _______, _______,          _______,
-        KC_DOT,  KC_0,        KC_0,                                           MS_BTN1,                           _______, _______, _______, LT(_FNY, KC_RIGHT)
+        KC_DOT,  KC_0,        KC_0,                                           MS_BTN1,                            _______, _______, _______, LT(_FNY, KC_RIGHT)
     ),
     [_TN2] = _LAYOUT(
         _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  _______,
@@ -231,6 +216,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_P,    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
         _______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
         KC_LCTL, _______, _______,                            KC_SPACE,                           _______, _______, _______, LT(_FNY, KC_RIGHT)
+    ),
+    [_FNX] = _LAYOUT(
+        KC_CAPS, TO(_TN1), XXXXXXX, XXXXXXX, XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+        XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, DF(_RTSA), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, TO(_TN2),
+        XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          TO(_TN3),
+        XXXXXXX,           XXXXXXX, XXXXXXX, XXXXXXX,   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,
+        XXXXXXX, XXXXXXX,  XXXXXXX,                              XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
+    ),
+    [_FNY] = _LAYOUT( // should be last
+        KC_ESC,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,   XXXXXXX,   XXXXXXX,
+        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,   XXXXXXX,   XXXXXXX,
+        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,              XXXXXXX,
+        XXXXXXX,          XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,              XXXXXXX,
+        XXXXXXX, XXXXXXX, XXXXXXX,                            XXXXXXX,                            XXXXXXX, DF(_BASE), TO(_BASE), XXXXXXX
     ),
 
 
