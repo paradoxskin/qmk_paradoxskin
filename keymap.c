@@ -72,6 +72,16 @@
 #define KC_BT4 KC_AP2_BT4
 #endif
 
+#ifdef KEYBOARD_annepro2d
+#define ENABLE_BLUETOOTH
+#define _LAYOUT LAYOUT_60_ansi
+#define KC_BTU KC_AP2_USB
+#define KC_BT1 KC_AP2_BT1
+#define KC_BT2 KC_AP2_BT2
+#define KC_BT3 KC_AP2_BT3
+#define KC_BT4 KC_AP2_BT4
+#endif
+
 #ifdef KEYBOARD_qk61
 #include "common/rdmctmzt_common.h"
 #define ENABLE_BLUETOOTH
