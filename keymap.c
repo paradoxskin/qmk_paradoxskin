@@ -1,4 +1,5 @@
 #include QMK_KEYBOARD_H
+#include "password.h"
 
 /* keyboard diff */
 #ifdef KEYBOARD_keychron_v4
@@ -189,7 +190,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         MT(MOD_LCTL,KC_TAB), KC_Q,     KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O,    KC_P,            KC_LBRC,         KC_RBRC,          KC_BSLS,
         KC_ESC,              KC_A,     KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L,    KC_SCLN,         KC_QUOT,                           KC_ENT,
         KC_ENTER,                      KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT,          KC_SLSH,                           RSFT_T(KC_UP),
-        XXXXXXX,             MO(_FN2), KC_LSFT,                KC_ODD_SPACE,              TD(TD_TH_LC_F1), LGUI_T(KC_LEFT), LT(_FN2,KC_DOWN), LT(_FNX,KC_RIGHT)
+        QK_LEAD,             MO(_FN2), KC_LSFT,                KC_ODD_SPACE,              TD(TD_TH_LC_F1), LGUI_T(KC_LEFT), LT(_FN2,KC_DOWN), LT(_FNX,KC_RIGHT)
     ),
     [_FN1] = _LAYOUT(
         XXXXXXX, KC_BT1,  KC_BT2,  KC_BT3,  KC_BT4,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
@@ -311,6 +312,23 @@ void post_process_record_user(uint16_t keycode, keyrecord_t *record)
             }
             break;
     }
+}
+
+void leader_start_user(void) {
+    pre_odd_space_light(1);
+}
+
+void leader_end_user(void) {
+    if (leader_sequence_one_key(KC_O)) {
+        SEND_STRING(SS_DOWN(X_LCTL) "xo" SS_UP(X_LCTL));
+    } else if (leader_sequence_one_key(KC_F)) {
+        SEND_STRING(SS_DOWN(X_LCTL) "xf" SS_UP(X_LCTL));
+    } else if (leader_sequence_two_keys(KC_P, KC_1)) {
+        SEND_STRING(PSW_1);
+    } else if (leader_sequence_two_keys(KC_P, KC_2)) {
+        SEND_STRING(PSW_2);
+    }
+    pre_odd_space_light(0);
 }
 
 #ifdef ENABLE_MATRIX
