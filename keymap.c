@@ -102,11 +102,11 @@
 #endif
 
 /* func declare */
-bool fn_process_super_space(uint16_t keycode, keyrecord_t *record);
-void fn_td_tap_hold_finished(tap_dance_state_t *state, void *user_data);
-void fn_td_tap_hold_reset(tap_dance_state_t *state, void *user_data);
-void fn_td_tap_hold_release(tap_dance_state_t *state, void *user_data);
-bool pre_odd_space(uint16_t keycode, keyrecord_t *record);
+static void fn_td_tap_hold_finished(tap_dance_state_t *state, void *user_data);
+static void fn_td_tap_hold_reset(tap_dance_state_t *state, void *user_data);
+static void fn_td_tap_hold_release(tap_dance_state_t *state, void *user_data);
+static bool pre_odd_space(uint16_t keycode, keyrecord_t *record);
+static void pre_odd_space_light(int on);
 
 /* static */
 #define ACT_TD_TAP_HOLD(once, irq_tap, tap, hold) { \
@@ -337,7 +337,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
  * MT: 有按键irq时，等待release，如果超过TAPPING_TERM还不松，判断为hold。如果提前松了，判断为tap
  * TD: 有按键irq时，立即处理finished，无法等待完整的窗口，想要达到MT的效果，需要其他处理逻辑的帮助
  */
-void fn_td_tap_hold_finished(tap_dance_state_t *state, void *user_data)
+static void fn_td_tap_hold_finished(tap_dance_state_t *state, void *user_data)
 {
     td_tap_hold_t *tap_hold = (td_tap_hold_t *)user_data;
     if (state->count > 1
@@ -349,7 +349,7 @@ void fn_td_tap_hold_finished(tap_dance_state_t *state, void *user_data)
     register_code16(tap_hold->held);
 }
 
-void fn_td_tap_hold_reset(tap_dance_state_t *state, void *user_data)
+static void fn_td_tap_hold_reset(tap_dance_state_t *state, void *user_data)
 {
     td_tap_hold_t *tap_hold = (td_tap_hold_t *)user_data;
     if (!tap_hold->held) return;
@@ -358,7 +358,7 @@ void fn_td_tap_hold_reset(tap_dance_state_t *state, void *user_data)
     tap_hold->held = 0;
 }
 
-void fn_td_tap_hold_release(tap_dance_state_t *state, void *user_data)
+static void fn_td_tap_hold_release(tap_dance_state_t *state, void *user_data)
 {
     td_tap_hold_t *tap_hold = (td_tap_hold_t *)user_data;
     /* speed up tap */
@@ -380,7 +380,7 @@ static void pre_odd_space_light(int on)
 #endif
 }
 
-bool pre_odd_space(uint16_t keycode, keyrecord_t *record)
+static bool pre_odd_space(uint16_t keycode, keyrecord_t *record)
 {
     static uint16_t now_kc = MT(MOD_LALT, KC_SPC);
     static uint16_t release_time;
