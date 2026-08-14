@@ -125,7 +125,6 @@ enum layers {
     _TN1,
     _TN2,
     _TN3,
-    _FTG,
     _FNX,
     _FNY,
 };
@@ -186,16 +185,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 #endif
     [_BASE] = _LAYOUT(
-        LT(_FN1,KC_GRAVE),   KC_1,     KC_2, KC_3, KC_4, KC_5, KC_6,    KC_7, KC_8, KC_9,    KC_0,    KC_MINS,          KC_EQL,           KC_BSPC,
-        MT(MOD_LCTL,KC_TAB), KC_Q,     KC_W, KC_E, KC_R, KC_T, KC_Y,    KC_U, KC_I, KC_O,    KC_P,    KC_LBRC,          KC_RBRC,          KC_BSLS,
-        KC_ESC,              KC_A,     KC_S, KC_D, KC_F, KC_G, KC_H,    KC_J, KC_K, KC_L,    KC_SCLN, KC_QUOT,                            KC_ENT,
-        KC_LSFT,                       KC_Z, KC_X, KC_C, KC_V, KC_B,    KC_N, KC_M, KC_COMM, KC_DOT,  KC_SLSH,                            RSFT_T(KC_UP),
-        TD(TD_TH_LC_F1),     MO(_FN2), KC_LGUI,                KC_ODD_SPACE,                 KC_RALT, LT(_FN1,KC_LEFT), LT(_FN2,KC_DOWN), LT(_FNX,KC_RIGHT)
+        LT(_FN1,KC_GRAVE),   KC_1,     KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9,    KC_0,            KC_MINS,         KC_EQL,           KC_BSPC,
+        MT(MOD_LCTL,KC_TAB), KC_Q,     KC_W, KC_E, KC_R, KC_T, KC_Y, KC_U, KC_I, KC_O,    KC_P,            KC_LBRC,         KC_RBRC,          KC_BSLS,
+        KC_ESC,              KC_A,     KC_S, KC_D, KC_F, KC_G, KC_H, KC_J, KC_K, KC_L,    KC_SCLN,         KC_QUOT,                           KC_ENT,
+        KC_ENTER,                      KC_Z, KC_X, KC_C, KC_V, KC_B, KC_N, KC_M, KC_COMM, KC_DOT,          KC_SLSH,                           RSFT_T(KC_UP),
+        XXXXXXX,             MO(_FN2), KC_LSFT,                KC_ODD_SPACE,              TD(TD_TH_LC_F1), LGUI_T(KC_LEFT), LT(_FN2,KC_DOWN), LT(_FNX,KC_RIGHT)
     ),
     [_FN1] = _LAYOUT(
         XXXXXXX, KC_BT1,  KC_BT2,  KC_BT3,  KC_BT4,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-        KC_BTU,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RM_HUEU, RM_SATU, RM_VALU,
-        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RM_SPDU,          RM_NEXT,
+        KC_BTU,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, MS_BTN1, MS_BTN1, XXXXXXX, XXXXXXX, RM_HUEU, RM_SATU, RM_VALU,
+        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, MS_LEFT, MS_DOWN, MS_UP,   MS_RGHT, XXXXXXX, RM_SPDU,          RM_NEXT,
         KC_LSFT,          XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          RM_TOGG,
         XXXXXXX, XXXXXXX, KC_PSCR,                            KC_LSFT,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
     ),
@@ -204,15 +203,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         MS_WHLD, MS_WHLL, MS_WHLR, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_HOME, KC_END,  XXXXXXX,
         KC_VOLD, KC_VOLU, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT,XXXXXXX, KC_PGUP,          KC_PSCR,
         KC_MPRV,          KC_MNXT, XXXXXXX, XXXXXXX, C(S(KC_V)), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_PGDN,          XXXXXXX,
-        KC_MUTE, XXXXXXX, KC_MPLY,                               XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
+        KC_MUTE, XXXXXXX, KC_MPLY,                               KC_LGUI,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
     ),
     // TO layer
     [_TN1] = _LAYOUT(
         KC_BSPC, KC_KP_SLASH, KC_KP_ASTERISK, KC_KP_MINUS, _______,  _______, _______, _______, _______, _______, _______, _______, _______, _______,
         KC_7,    KC_8,        KC_9,           KC_KP_PLUS,  _______,  _______, _______, _______, _______, _______, _______, _______, _______, _______,
-        KC_4,    KC_5,        KC_6,           KC_KP_PLUS,  _______,  _______, MS_LEFT, MS_DOWN, MS_UP,   MS_RGHT, MS_BTN2, _______,          _______,
+        KC_4,    KC_5,        KC_6,           KC_KP_PLUS,  _______,  _______, _______, _______, _______, _______, _______, _______,          _______,
         KC_1,                 KC_2,           KC_3,        KC_ENTER, _______, _______, _______, _______, _______, _______, _______,          _______,
-        KC_DOT,  KC_0,        KC_0,                                           MS_BTN1,                            _______, _______, _______, LT(_FNY, KC_RIGHT)
+        KC_DOT,  KC_0,        KC_0,                                           _______,                            _______, _______, _______, LT(_FNY, KC_RIGHT)
     ),
     [_TN2] = _LAYOUT(
         _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  _______,
@@ -225,21 +224,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
         _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,
         KC_P,    _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
-        _______,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
-        KC_LCTL, _______, _______,                            KC_SPACE,                           _______, _______, _______, LT(_FNY, KC_RIGHT)
+        KC_LSFT,          _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,          _______,
+        KC_LCTL, _______, _______,                            KC_SPACE,                           KC_RALT, _______, _______, LT(_FNY, KC_RIGHT)
     ),
     //  layer
-    [_FTG] = _LAYOUT(
-        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-        XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_U,    KC_I,    KC_O,    KC_P,    XXXXXXX, XXXXXXX, XXXXXXX,
-        XXXXXXX, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, XXXXXXX,          KC_ENT,
-        XXXXXXX,          XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,
-        XXXXXXX, XXXXXXX, XXXXXXX,                            KC_SPACE,                           XXXXXXX, XXXXXXX, XXXXXXX, MO(_FNY)
-    ),
     [_FNX] = _LAYOUT(
         KC_CAPS, TO(_TN1), XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
         XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, TO(_TN2),
-        XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, DF(_FTG), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          TO(_TN3),
+        XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          TO(_TN3),
         XXXXXXX,           XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,          XXXXXXX,
         XXXXXXX, XXXXXXX,  XXXXXXX,                             XXXXXXX,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
     ),
@@ -292,6 +284,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
             }
             break;
         case KC_LSFT:
+        case TD(TD_TH_LC_F1):
             if (record->event.pressed) {
                 /* start count */
                 shift_sign = 1;
@@ -379,10 +372,10 @@ static void pre_odd_space_light(int on)
 {
 #ifdef ENABLE_MATRIX
     if (on) {
-        rgb_matrix_set_color(41, 0, 5, 5);
+        rgb_matrix_set_color(56, 0, 5, 5);
     }
     else {
-        rgb_matrix_set_color(41, 0, 0, 0);
+        rgb_matrix_set_color(56, 0, 0, 0);
     }
 #endif
 }
@@ -397,6 +390,10 @@ bool pre_odd_space(uint16_t keycode, keyrecord_t *record)
             switch (g_odd_space_type) {
                 case KC_LSFT:
                     now_kc = MT(MOD_LSFT, KC_SPC);
+                    pre_odd_space_light(light_on=1);
+                    break;
+                case TD(TD_TH_LC_F1):
+                    now_kc = MT(MOD_LCTL, KC_SPC);
                     pre_odd_space_light(light_on=1);
                     break;
             }
