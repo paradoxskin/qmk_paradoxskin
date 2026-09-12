@@ -75,6 +75,7 @@
 
 #ifdef KEYBOARD_annepro2d
 #define ENABLE_BLUETOOTH
+#define ENABLE_MATRIX
 #define _LAYOUT LAYOUT_60_ansi
 #define KC_BTU KC_AP2_USB
 #define KC_BT1 KC_AP2_BT1
@@ -200,11 +201,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         XXXXXXX, XXXXXXX, KC_PSCR,                            KC_LSFT,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
     ),
     [_FN2] = _LAYOUT(
-        MS_WHLU, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,      KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_DEL,
-        MS_WHLD, MS_WHLL, MS_WHLR, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_HOME, KC_END,  XXXXXXX,
-        KC_VOLD, KC_VOLU, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT,XXXXXXX, KC_PGUP,          KC_PSCR,
-        KC_MPRV,          KC_MNXT, XXXXXXX, XXXXXXX, C(S(KC_V)), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_PGDN,          XXXXXXX,
-        KC_MUTE, XXXXXXX, KC_MPLY,                               KC_LGUI,                            XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
+        MS_WHLU, KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,  KC_DEL,
+        MS_WHLD, MS_WHLL, MS_WHLR, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_HOME, KC_END,  XXXXXXX,
+        KC_VOLD, KC_VOLU, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT,XXXXXXX, KC_PGUP,          KC_PSCR,
+        KC_MPRV,          KC_MNXT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_PGDN,          XXXXXXX,
+        KC_MUTE, XXXXXXX, KC_MPLY,                            C(S(KC_V)),                         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX
     ),
     // TO layer
     [_TN1] = _LAYOUT(
@@ -277,7 +278,7 @@ bool pre_process_record_user(uint16_t keycode, keyrecord_t *record)
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record)
 {
-    static char shift_sign = 0;
+    static char odd_sign = 0;
     switch (keycode) {
         case ODD_BG ... ODD_ED:
             if (odd_actions[ODD_IDX(keycode)].process) {
@@ -288,16 +289,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record)
         case TD(TD_TH_LC_F1):
             if (record->event.pressed) {
                 /* start count */
-                shift_sign = 1;
-            } else if (shift_sign) { /* release */
+                odd_sign = 1;
+            } else if (odd_sign) { /* release */
                 /* count result: only press&release shift */
                 g_odd_space_time = record->event.time;
                 g_odd_space_type = keycode;
-                shift_sign = 0;
+                odd_sign = 0;
             }
             break;
         default:
-            shift_sign = 0;
+            odd_sign = 0;
             g_odd_space_type = 0;
     }
     return true;
@@ -314,7 +315,15 @@ void post_process_record_user(uint16_t keycode, keyrecord_t *record)
     }
 }
 
-void leader_start_user(void) {
+void keyboard_post_init_user(void)
+{
+#ifdef ENABLE_MATRIX
+    rgb_matrix_set_flags(LED_FLAG_NONE);
+#endif
+}
+
+void leader_start_user(void)
+{
     pre_odd_space_light(1);
 }
 
@@ -389,11 +398,25 @@ static void fn_td_tap_hold_release(tap_dance_state_t *state, void *user_data)
 static void pre_odd_space_light(int on)
 {
 #ifdef ENABLE_MATRIX
-    if (on) {
-        rgb_matrix_set_color(56, 0, 5, 5);
-    }
-    else {
-        rgb_matrix_set_color(56, 0, 0, 0);
+    switch(on) {
+        case 0:
+            rgb_matrix_set_color(15, 0, 0, 0);
+            rgb_matrix_set_color(16, 0, 0, 0);
+            rgb_matrix_set_color(17, 0, 0, 0);
+            rgb_matrix_set_color(18, 0, 0, 0);
+            rgb_matrix_set_color(19, 0, 0, 0);
+            rgb_matrix_set_color(20, 0, 0, 0);
+            break;
+        case 1:
+            rgb_matrix_set_color(15, 0, 5, 5);
+            rgb_matrix_set_color(16, 0, 5, 5);
+            rgb_matrix_set_color(17, 0, 5, 5);
+            break;
+        case 2:
+            rgb_matrix_set_color(18, 0, 5, 5);
+            rgb_matrix_set_color(19, 0, 5, 5);
+            rgb_matrix_set_color(20, 0, 5, 5);
+            break;
     }
 #endif
 }
@@ -408,11 +431,12 @@ static bool pre_odd_space(uint16_t keycode, keyrecord_t *record)
             switch (g_odd_space_type) {
                 case KC_LSFT:
                     now_kc = MT(MOD_LSFT, KC_SPC);
+                    tap_code(KC_LSFT);
                     pre_odd_space_light(light_on=1);
                     break;
                 case TD(TD_TH_LC_F1):
                     now_kc = MT(MOD_LCTL, KC_SPC);
-                    pre_odd_space_light(light_on=1);
+                    pre_odd_space_light(light_on=2);
                     break;
             }
         } else if (timer_elapsed(release_time) >= TAPPING_TERM) {
