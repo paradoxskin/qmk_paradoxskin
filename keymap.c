@@ -87,6 +87,7 @@
 #ifdef KEYBOARD_qk61
 #include "common/rdmctmzt_common.h"
 #define ENABLE_BLUETOOTH
+#define ENABLE_MATRIX
 #define _LAYOUT LAYOUT_60_ansi
 #define KC_BTU MD_USB
 #define KC_BT1 MD_BLE1
@@ -336,6 +337,8 @@ void leader_end_user(void) {
         SEND_STRING(PSW_1);
     } else if (leader_sequence_two_keys(KC_P, KC_2)) {
         SEND_STRING(PSW_2);
+    } else if (leader_sequence_two_keys(KC_P, KC_3)) {
+        SEND_STRING(PSW_3);
     }
     pre_odd_space_light(0);
 }
